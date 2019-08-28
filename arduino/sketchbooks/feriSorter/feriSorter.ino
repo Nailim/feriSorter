@@ -25,7 +25,7 @@ int pinServoMotor_dovod = 10;
 int pinServoMotor_tobogan = 11;
 
 // nastavitve pozicij - servo
-int servoPozicije_dovod[] = {10, 80, 165};                      // zgrabi bonbon, senzor, spusti bonbon 
+int servoPozicije_dovod[] = {10, 108, 175};                      // zgrabi bonbon, senzor, spusti bonbon 
 int servoPozicije_tobogan[] = {90, 15, 45, 77, 105, 143, 175};  // brez bonbona, moder, zelen, rumen, rjavi, oranzen, rdec
 
 // hranjenje lokacija pozicij (za reguliranje hitrosti premikanja)
@@ -55,13 +55,13 @@ int barvaIndikatorLED_oranzna[] = {200, 150, 0};
 int barvaIndikatorLED_rdeca[] = {200, 0, 0};
 
 // nastavi VREDNOSTI SENZORJA (10 bitni pretvornik: 0 - 1023) za posamezno barvo bonbona
-int barvaBonbonVrednost_brez[] = {626, 143, 195, 295};
-int barvaBonbonVrednost_modra[] = {665, 455, 375, 351};
-int barvaBonbonVrednost_zelena[] = {660, 443, 441, 518};
-int barvaBonbonVrednost_rumena[] = {644, 163, 247, 410};
-int barvaBonbonVrednost_rjava[] = {665, 363, 440, 505};
-int barvaBonbonVrednost_oranzna[] = {653, 176, 329, 450};
-int barvaBonbonVrednost_rdeca[] = {659, 206, 435, 501};
+int barvaBonbonVrednost_brez[] = {545, 450, 390, 400};
+int barvaBonbonVrednost_modra[] = {550, 250, 210, 190};
+int barvaBonbonVrednost_zelena[] = {555, 380, 330, 380};
+int barvaBonbonVrednost_rumena[] = {555, 405, 445, 500};
+int barvaBonbonVrednost_rjava[] = {555, 330, 425, 420};
+int barvaBonbonVrednost_oranzna[] = {565, 200, 310, 325};
+int barvaBonbonVrednost_rdeca[] = {520, 325, 500, 455};
 
 // nastavimo zaporedje imena barv katera uporabljamo
 String barvaBonbon_ime[] = {"BREZ", "MODRA", "ZELENA", "RUMENA", "RJAVA", "ORANZNA", "RDECA"};
@@ -122,7 +122,7 @@ void loop() {
 
       // zagrabi bonbon
       nastaviServo_dovod(0, false);
-      delay(500);
+      delay(1500);
 
       // nesi bonbon do senzorja
       nastaviServo_dovod(1, false);
