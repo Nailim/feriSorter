@@ -8,21 +8,20 @@ String serialString = ""; // pripravimo spremenljivko za tekst
 bool led_R = false;
 bool led_G = false;
 bool led_B = false;
-bool led_off = false;
+bool led_off = true;
 
 // !!! nastavi pine na katerih so priplopjene barve
-int pin_R = 4;
-int pin_G = 2;
-int pin_B = 3;
- 
-int servoPozicija = 90; // zacetna servo pozicija
+int pin_R = 7;
+int pin_G = 8;
+int pin_B = 9;
 
 // !!! nastavi pozicije za servo motor
-int servoPozicija_zagrabi = 10;
-int servoPozicija_senzor = 75;
-int servoPozicija_spusti = 170;
- 
- 
+const int servoPozicija_zagrabi = 10;
+const int servoPozicija_senzor = 105;
+const int servoPozicija_spusti = 180;
+
+int servoPozicija = servoPozicija_spusti; // zacetna servo pozicija
+
 int senzor = 0; // pripravi spremenljivko za vrednost senzorja
  
 void setup() {
@@ -30,7 +29,7 @@ void setup() {
  
   Serial.begin(9600);
  
-  servo_krog.attach(5); // !!! nastavi pin na katerega je priklopjen servo
+  servo_krog.attach(10); // !!! nastavi pin na katerega je priklopjen servo
 
   
   pinMode(pin_R, OUTPUT);
@@ -46,6 +45,9 @@ void loop() {
   // put your main code here, to run repeatedly:
  
   if (led_R) {
+    digitalWrite(pin_G, LOW);
+    digitalWrite(pin_B, LOW);
+    
     digitalWrite(pin_R, HIGH);
     Serial.print("svetilo R - vrednost senzorja = ");
   } else {
@@ -82,7 +84,7 @@ void loop() {
   servo_krog.write(servoPozicija);
  
   // pocakajmo da se senzor umiri
-  delay(50);
+  delay(250);
 }
  
 void serialEvent() {
@@ -98,24 +100,38 @@ void serialEvent() {
         if (led_R) {
           led_R = false;
         } else {
+          led_off = false;
           led_R = true;
+          led_G = false;
+          led_B = false;
         }
       }
       if (serialString.indexOf("g") >= 0) {
         if (led_G) {
           led_G = false;
         } else {
+          led_off = false;
           led_G = true;
+          led_R = false;
+          led_B = false;
         }
       }
       if (serialString.indexOf("b") >= 0) {
         if (led_B) {
           led_B = false;
         } else {
+          led_off = false;
           led_B = true;
+          led_R = false;
+          led_G = false;
         }
       }
       if (serialString.indexOf("o") >= 0) {
+        if (led_off) {
+          led_off = false;
+        }
+        led_off = true;
+        
         led_R = false;
         led_G = false;
         led_B = false;
@@ -123,13 +139,13 @@ void serialEvent() {
  
       if (serialString.indexOf("s") >= 0) {
         switch (servoPozicija) {
-          case 10:
+          case servoPozicija_spusti:
             servoPozicija = servoPozicija_zagrabi;
             break;
-          case 75:
+          case servoPozicija_zagrabi:
             servoPozicija = servoPozicija_senzor;
             break;
-          case 170:
+          case servoPozicija_senzor:
             servoPozicija = servoPozicija_spusti;
             break;  
         }
